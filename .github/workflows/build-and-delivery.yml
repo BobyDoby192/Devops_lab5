@@ -1,24 +1,27 @@
 name: Build and Delivery
 on:
   workflow_run:
-    workflows: ["Test Python App"] # Ждем завершения тестов
+    workflows: ["Test Python App"]
     types: [completed]
-    branches: [main] # Только если пуш был в main[cite: 1]
+    branches: [main]
 
 jobs:
   cd:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }} # Только если тесты прошли[cite: 1]
+    # Запускать только при успешном завершении тестов
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}[cite: 1]
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4[cite: 1]
+
       - name: Login to Docker Hub
-        uses: docker/login-action@v3
+        uses: docker/login-action@v3[cite: 1]
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}[cite: 1]
           password: ${{ secrets.DOCKERHUB_TOKEN }}[cite: 1]
-      - name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          push: true
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/my-app:latest[cite: 1]
 
+      - name: Build and Push
+        uses: docker/build-push-action@v6[cite: 1]
+        with:
+          push: true[cite: 1]
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/my-app:latest[cite: 1]
