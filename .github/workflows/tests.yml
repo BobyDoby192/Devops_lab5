@@ -15,3 +15,4 @@ jobs:
           pip install -r requirements.txt pytest httpx
       - name: Run tests
         run: python -m pytest tests/
+# trigger change
